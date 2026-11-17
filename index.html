@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>動土大典 架構與分組</title>
+<style>
+:root{
+  --bg:#f7f4ec; --card:#fffdf8; --ink:#2b2a27; --sub:#6b665c; --line:#ddd6c6;
+  --accent:#3d5a80; --accent-soft:#e6ecf3; --warn:#9a5b13; --warn-soft:#f6ecdc;
+  --ok:#3f6b4a; --chip:#efe9dc;
+  --c1:#3d5a80; --c2:#5b6e4a; --c3:#7a5a3a; --c4:#6a5a80;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#1d1c1a; --card:#262522; --ink:#e8e4da; --sub:#a9a396; --line:#3c3a35;
+    --accent:#8fb0d6; --accent-soft:#2b3440; --warn:#e0b071; --warn-soft:#3a2f22;
+    --ok:#9cc4a5; --chip:#33312c;
+    --c1:#8fb0d6; --c2:#a9c08f; --c3:#d4ae86; --c4:#b9a8d6;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1d1c1a; --card:#262522; --ink:#e8e4da; --sub:#a9a396; --line:#3c3a35;
+  --accent:#8fb0d6; --accent-soft:#2b3440; --warn:#e0b071; --warn-soft:#3a2f22;
+  --ok:#9cc4a5; --chip:#33312c;
+  --c1:#8fb0d6; --c2:#a9c08f; --c3:#d4ae86; --c4:#b9a8d6;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:150px}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 -apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif}
+a{color:var(--accent)}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px 80px}
+/* 頂端固定區（可收合） */
+header{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.hrow{max-width:1100px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:8px}
+.hrow h1{font-size:19px;margin:0;flex:1;line-height:1.3}
+.hrow h1 small{display:block;font-size:13px;color:var(--sub);font-weight:400}
+.ibtn{min-width:44px;min-height:44px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:10px;font-size:15px;cursor:pointer;padding:0 10px}
+.hmore{max-width:1100px;margin:0 auto;padding:0 16px 8px}
+header.collapsed .hmore{display:none}
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+nav.tabs button{flex:0 0 auto;min-height:44px;padding:0 14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:22px;font-size:16px;cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+.search{display:flex;gap:6px;margin-top:4px}
+.search input{flex:1;min-height:44px;font-size:16px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+.crumb{font-size:14px;color:var(--sub);margin-top:6px}
+.crumb b{color:var(--ink)}
+section.tab{display:none;padding-top:14px}
+section.tab.on{display:block}
+h2{font-size:22px;margin:18px 0 8px}
+h3{font-size:18px;margin:0 0 6px}
+p.lead{color:var(--sub);margin:4px 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin:10px 0}
+.chip{display:inline-block;background:var(--chip);border-radius:8px;padding:1px 8px;margin:2px 4px 2px 0;font-size:15px}
+.note{background:var(--warn-soft);border-left:4px solid var(--warn);border-radius:8px;padding:10px 14px;margin:12px 0;font-size:16px}
+.src{font-size:13px;color:var(--sub)}
+/* 架構圖 */
+.root{text-align:center;margin:8px auto 4px}
+.root span{display:inline-block;background:var(--accent);color:var(--bg);font-size:22px;font-weight:700;padding:10px 28px;border-radius:14px}
+.stem{width:2px;height:16px;background:var(--line);margin:0 auto}
+.clusters{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.cluster{border:2px solid var(--cc);border-radius:16px;padding:10px;background:var(--card)}
+.cluster>.ct{font-weight:700;color:var(--cc);font-size:17px;margin:0 4px 8px}
+.cluster>.ct small{font-weight:400;color:var(--sub);font-size:13px;display:block}
+.branch{border:1px solid var(--line);border-radius:12px;margin:8px 0;background:var(--bg)}
+.branch>button{width:100%;min-height:44px;text-align:left;border:0;background:none;color:var(--ink);font-size:17px;font-weight:600;padding:8px 12px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.branch>button .n{font-weight:400;color:var(--sub);font-size:14px}
+.branch ul{margin:0;padding:0 12px 10px 28px;font-size:16px}
+.branch ul ul{padding:0 0 0 18px;font-size:15px;color:var(--sub)}
+.branch.closed ul{display:none}
+/* 動線 */
+.flow{display:grid;gap:10px}
+.day{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:start}
+.day .d{background:var(--accent-soft);color:var(--accent);font-weight:700;border-radius:12px;padding:10px;text-align:center;line-height:1.3}
+.day .d small{display:block;font-weight:400;font-size:13px}
+.steps{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.step{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:15px}
+.step b{display:block;font-size:12px;color:var(--sub);font-weight:400}
+.arr{color:var(--sub)}
+@media (max-width:600px){.day{grid-template-columns:1fr}.day .d{text-align:left}}
+/* 連動 */
+.link{display:grid;grid-template-columns:1fr;gap:4px}
+.link .who{font-size:15px}
+/* 分組 */
+.grp h3{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.grp .tag{font-size:13px;font-weight:400;border-radius:8px;padding:0 8px;background:var(--accent-soft);color:var(--accent)}
+.kv{display:grid;grid-template-columns:96px 1fr;gap:4px 10px;font-size:16px;margin-top:6px}
+.kv dt{color:var(--sub)}
+.kv dd{margin:0}
+@media (max-width:480px){.kv{grid-template-columns:1fr}.kv dt{margin-top:6px}}
+/* 待辦 */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 10px}
+.filters button{min-height:44px;padding:0 12px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:22px;font-size:15px;cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.phase h2{position:sticky;top:var(--hh,140px);background:var(--bg);padding:6px 0;z-index:5;margin-top:10px}
+.todo{display:flex;gap:10px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:8px 12px;margin:8px 0}
+.todo input{width:26px;height:26px;margin:9px 2px 0;flex:0 0 auto;accent-color:var(--ok)}
+.todo label{flex:1;cursor:pointer;min-height:44px;display:flex;flex-direction:column;justify-content:center}
+.todo .g{font-size:13px;color:var(--sub)}
+.todo.done label .t{text-decoration:line-through;color:var(--sub)}
+.todo.q{border-color:var(--warn);background:var(--warn-soft)}
+.prog{font-size:15px;color:var(--sub)}
+.hide{display:none!important}
+mark{background:#f3dc8a;color:#2b2a27;border-radius:3px}
+.bus{border-left:5px solid var(--accent)}
+.bus .route{font-size:16px;margin:4px 0 6px}
+.hot{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-top:8px}
+.hot div{border:1px dashed var(--line);border-radius:10px;padding:6px 8px;font-size:14px;line-height:1.4}
+.hot div b{display:block;font-size:15px}
+.rules li{margin:4px 0}
+.tag2{display:inline-block;font-size:13px;border-radius:8px;padding:0 8px;background:var(--warn-soft);color:var(--warn);margin-left:6px}
+.top{position:fixed;right:16px;bottom:16px;z-index:30}
+footer{color:var(--sub);font-size:13px;margin-top:30px;border-top:1px solid var(--line);padding-top:10px}
+@media print{header,.top,.filters,.search{display:none!important}section.tab{display:block!important}.branch.closed ul{display:block!important}body{font-size:13px}.card,.todo,.cluster{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header id="hd">
+  <div class="hrow">
+    <h1>寶嚴禪寺開山動土大典<small>架構圖 ｜ 三天動線 ｜ 工作分組 ｜ 待辦事項 ｜ 遊覽車編組（2026-11-17 更新）</small></h1>
+    <button class="ibtn" id="themeBtn" aria-label="切換深淺色">◐</button>
+    <button class="ibtn" id="foldBtn" aria-expanded="true" aria-label="收合頂端">收合</button>
+  </div>
+  <div class="hmore">
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-t="arch" aria-selected="true">① 架構圖</button>
+      <button role="tab" data-t="flow">② 三天動線</button>
+      <button role="tab" data-t="groups">③ 工作分組</button>
+      <button role="tab" data-t="todo">④ 待辦事項</button>
+      <button role="tab" data-t="ask">⑤ 重要說明</button>
+      <button role="tab" data-t="bus">⑥ 遊覽車編組</button>
+    </nav>
+    <div class="search"><input id="q" type="search" placeholder="搜尋：例如 桂田、鏟子、火車…" autocomplete="off"><button class="ibtn" id="qx" aria-label="清除搜尋">清除</button></div>
+    <div class="crumb" id="crumb">目前位置：<b>動土大典</b> › 架構圖</div>
+  </div>
+</header>
+
+<div class="wrap">
+
+<!-- ① 架構圖 -->
+<section class="tab on" id="t-arch">
+  <p class="lead">大典的工作分成 11 個大項，依性質歸成四大區塊。點項目名稱可以收合。</p>
+  <div class="root"><span>動土大典</span></div>
+  <div class="stem"></div>
+  <div class="clusters" id="clusters"></div>
+
+  <h2>分支之間的連動（同一件事出現在好幾個分支）</h2>
+  <p class="lead">同一件事常常牽涉好幾組，這些組要對接同一份名單或資料。分工時最容易漏的就是這裡。</p>
+  <div id="links"></div>
+</section>
+
+<!-- ② 三天動線 -->
+<section class="tab" id="t-flow">
+  <p class="lead">三天的工作照時間順序排成一條線，每一格標出由哪一組負責。</p>
+  <div class="flow" id="flowBox"></div>
+  <div class="note">各段的具體時間（幾點發車、幾點報到）另行公布。</div>
+</section>
+
+<!-- ③ 工作分組 -->
+<section class="tab" id="t-groups">
+  <p class="lead">每一組的負責範圍，以及要跟哪些組對接。組長名單另行公布。</p>
+  <div id="grpBox"></div>
+</section>
+
+<!-- ④ 待辦 -->
+<section class="tab" id="t-todo">
+  <p class="lead">每一件要做的事，依「事前 → 12/25 → 12/26 → 12/27」排。勾選只存在這台裝置。<span class="prog" id="prog"></span></p>
+  <div class="filters" id="gf"></div>
+  <div id="todoBox"></div>
+</section>
+
+<!-- ⑥ 遊覽車編組 -->
+<section class="tab" id="t-bus">
+  <p class="lead">三天共 8 段車程。原則是「住哪家飯店就坐那家飯店的車」，要回飯店的段落一律按飯店分車，不繞路停別家飯店。各車名單與車長、小組長另行公布。</p>
+  <h2>幹部編派原則</h2>
+  <div class="card"><ol class="rules" id="busRules"></ol></div>
+  <h2>8 段車程</h2>
+  <div id="busBox"></div>
+  <h2>重點</h2>
+  <div class="note">✔ 26日中午離開的車開到<b>台東火車站</b>。</div>
+  <div class="note">✔ 27日回程是<b>兩列包車火車</b>：台北線、台中高雄線，都在<b>台東火車站</b>上車；開車時間另行公布。</div>
+  <div class="note">✔ 27日的遊覽車依「回程火車線＋上車飯店」分車，每台只接一家飯店。</div>
+</section>
+
+<!-- ⑤ 重要說明 -->
+<section class="tab" id="t-ask">
+  <p class="lead">大典已經確定的重要事項，工作人員請以這一頁為準。</p>
+  <div id="askBox"></div>
+</section>
+
+<footer class="siteinfo"><h3 style="font-size:16px;margin:0 0 6px">本站資訊</h3><dl class="kv"><dt>名稱</dt><dd>寶嚴禪寺開山動土大典　工作架構與分組</dd><dt>網址</dt><dd><a href="https://twnyda07.github.io/baoyan-dongtu-plan/">https://twnyda07.github.io/baoyan-dongtu-plan/</a></dd><dt>特別功能</dt><dd>搜尋工作項目；依組別查看待辦；勾選自己的進度（只存在自己的手機）</dd><dt>版權</dt><dd>© 2026 寶嚴山寶嚴禪寺　保留一切權利</dd></dl></footer>
+</div>
+<button class="ibtn top" id="toTop" aria-label="回到頂端">▲ 頂端</button>
+
+<script>
+// ===== 資料 =====
+const XM = {
+  "飯店":[["亞灣住客",[["餐",["26日早餐","27日早餐"]],["房",["入住","空房"]]]],["亞灣志工",[["餐",["25日之前每日早餐","26日早餐","27日早餐"]],["房",["志工房／25日之前","與會者房／25日開始"]]]],["銀河1",[["餐",["26日早餐","27日早餐"]],"房"]],["銀河2",[["餐",["26日早餐","27日早餐"]],"房"]],["立麗",[["餐",["26日早餐","27日早餐"]],"房"]],["桂田",[["餐",["26日早餐","27日早餐"]],"房"]]],
+  "交通":[["火車",["台北","台中","高雄"]],["遊覽車",[["25日火車站到飯店",["銀河1","銀河2","亞灣","立麗","桂田"]],"26日飯店到基地",["26日基地出發",["行程一參加大蒙山","中午離開","江賢二","三仙台"]],["27日",["惡地","博物館"]]]],["自行安排",["志工提前到","與會者當天到"]]],
+  "與會者":[["地方首長",["特照"]],"貴賓","諸山長老","僧團","外來法師","功德主","隨喜自費","在地民眾",["攤商",["星曜法師"]]],
+  "餐食":[["飯店",["亞灣","銀河1","銀河2","立麗","桂田"]],["攤商",["芊芊","素食小夜市"]],"星曜法師團隊",["行程晚餐",["26日三仙台","26日江賢二"]]],
+  "場地":["26日行李"],
+  "文書":["表彰","個人識別"],
+  "宣傳":[],
+  "設計":["宣傳","結緣品",["報到",["遊覽車車身","舉牌","個人識別"]],"表彰"],
+  "法務":[["動土",["主持",["引禮",["獻花","鏟子"]],"香燈"]],"大蒙山","三皈五戒","牌位"],
+  "報到":[["事前通知",[["善首",["個人識別證","餐卷",["繳交費用",["3000元隨喜","其他自費1000/晚/床","桂田自費"]]]],["善覺",["餐卷","個人識別證",["繳交費用",["3000元隨喜","桂田自費","其他自費1000/晚/床"]]]],["EPIC",["餐卷","個人識別證",["繳交費用",["3000元隨喜","桂田自費","其他自費1000/晚/床"]]]],["圓道",["個人識別證","餐卷","火車票",["繳交費用",["3000元隨喜","桂田自費","其他自費1000/晚/床"]]]],"新加坡"]],["活動前",["志工"]],"25日火車站",["25日飯店",["銀河1","銀河2","亞灣","立麗","桂田"]],"26日入場",["26日",["中午離開","三仙台","江賢二"]],["27日早上",["惡地","博物館"]],["27日中午",[["火車站",["台北","台中","高雄"]]]]],
+  "直播錄影":[]
+};
+const CLUSTERS = [
+  {name:"人",sub:"誰來、算哪一類",c:"--c4",b:["與會者"]},
+  {name:"住・行・食・報到",sub:"把人送到對的地方、吃飽、領到證",c:"--c1",b:["報到","交通","飯店","餐食"]},
+  {name:"典禮與現場",sub:"儀軌、場地、紀錄",c:"--c2",b:["法務","場地","直播錄影"]},
+  {name:"文宣・設計・文書",sub:"看得到、拿得到的東西",c:"--c3",b:["宣傳","設計","文書"]}
+];
+const LINKS = [
+  {k:"五間飯店（亞灣／銀河1／銀河2／立麗／桂田）",w:["飯店（房、餐）","餐食（飯店）","交通（25日火車站到飯店）","報到（25日飯店）"],s:"同一份「誰住哪間」名單，四組都要用；改一個地方要四組同步。"},
+  {k:"26日下午四條線（大蒙山留在原地）",w:["交通（26日基地出發）","報到（26日：中午離開、三仙台、江賢二）","餐食（行程晚餐：三仙台、江賢二）","法務（大蒙山）"],s:"下午共四條線：中午離開／江賢二／三仙台三條搭遊覽車出發；參加大蒙山那條留在原地，晚上結束後再搭遊覽車回飯店。每人選哪條，決定坐哪台車、在哪吃晚餐。"},
+  {k:"27日行程（惡地／博物館）",w:["交通（27日）","報到（27日）"],s:"同一份分線名單。"},
+  {k:"個人識別（識別證）",w:["文書（個人識別）","設計（報到 › 個人識別）","報到（事前通知 › 個人識別證）"],s:"設計出版型 → 文書套名單印製 → 送到各分院 → 各小組長通知大家到分院領取（不用寄）。"},
+  {k:"分院領取（不寄送）",w:["報到（事前通知：善首、善覺、EPIC、圓道、新加坡）","文書（個人識別）","交通（火車票）"],s:"每個分院都有領隊；識別證、餐卷、火車票全部到分院領取，不用寄，由各小組長通知來領取。"},
+  {k:"表彰",w:["文書（表彰）","設計（表彰）"],s:"設計做版、文書出名單與內容。"},
+  {k:"宣傳",w:["宣傳","設計（宣傳）"],s:"宣傳併入設計組，同一位窗口。"},
+  {k:"入住房數／空房數回報",w:["飯店（亞灣住客 › 房 › 入住、空房）","飯店（各飯店負責工作人員）","餐食（各飯店早餐）"],s:"入住後每家飯店的負責工作人員回報入住房數與空房數，用來結算費用、調配空房、訂餐。"},
+  {k:"特照（特別照客）",w:["與會者（地方首長 › 特照）","與會者（貴賓）","與會者（諸山長老）"],s:"特照是接待地方首長、貴賓、諸山長老的「特別照客」簡稱，不只地方首長。"},
+  {k:"星曜法師／攤商",w:["與會者（攤商 › 星曜法師）","餐食（攤商、星曜法師團隊）"],s:"攤商既是與會者也是供餐來源，名單與供餐量要對同一份。"},
+  {k:"桂田自費",w:["飯店（桂田）","報到（圓道 › 繳交費用 › 桂田自費）"],s:"住桂田的人要先收費，飯店組與報到組對同一份名單。"},
+  {k:"火車",w:["交通（火車：台北、台中、高雄）","報到（圓道 › 火車票、25日火車站、27日中午 › 火車站）"],s:"三線含來回。去程 25日火車站報到；回程 27日中午在火車站報到（台北／台中／高雄）。只有圓道寄火車票。"},
+  {k:"志工",w:["飯店（亞灣志工）","交通（自行安排 › 志工提前到）","報到（活動前 › 志工）"],s:"志工分兩種：提前到的在 25日之前自行抵達，住亞灣志工房、每日早餐；25日當天到的隨火車一起來。25日開始改住與會者房；活動前另外報到。"},
+  {k:"遊覽車",w:["交通（遊覽車）","設計（報到 › 遊覽車車身、舉牌）"],s:"車號與分線定了，設計才能做車身貼與舉牌。"}
+];
+const FLOW = [
+  {d:"事前",sub:"活動前",s:[["報到","事前通知：善首／善覺／EPIC／圓道／新加坡"],["設計","識別證出版型"],["文書","套名單印製"],["報到","各分院領隊收齊物品；小組長通知到分院領取識別證、餐卷、火車票；收費"],["報到","志工活動前報到"],["交通","志工提前到：25日之前自行抵達"],["飯店","亞灣志工：25日之前住志工房、每日早餐"]]},
+  {d:"12/25",sub:"抵達",s:[["交通","火車：台北／台中／高雄（25日到的志工同車）"],["報到","火車站報到"],["交通","遊覽車：火車站 → 五間飯店"],["報到","飯店報到（銀河1／銀河2／亞灣／立麗／桂田）"],["飯店","入住（亞灣志工改住與會者房）"],["飯店","各飯店負責人回報入住房數、空房數"],["飯店","結算費用、調配空房"],["餐食","調整早餐訂餐"]]},
+  {d:"12/26",sub:"動土",s:[["飯店","早餐"],["交通","飯店 → 基地（另有與會者當天自行到）"],["報到","入場報到"],["與會者","特照：專人接待地方首長、貴賓、諸山長老"],["法務","動土：主持、引禮（獻花、鏟子）、香燈"],["場地","26日行李：基地行李區"],["餐食","攤商：芊芊、素食小夜市、星曜法師團隊"],["交通","下午四條線：中午離開／江賢二／三仙台 搭車出發"],["餐食","行程晚餐：三仙台、江賢二"],["法務","第四條線大蒙山：留在原地（法務組點名）"],["交通","晚上 8:00 大蒙山結束 → 遊覽車回5家飯店"]]},
+  {d:"12/27",sub:"參訪・回程",s:[["飯店","早餐"],["報到","早上分線報到"],["交通","早上兩線：惡地／博物館"],["報到","中午台東火車站報到：兩列包車（台北線／台中高雄線）"],["交通","回程火車"]]}
+];
+// 工作分組
+const GROUPS = [
+  {g:"報到",name:"報到組",scope:"事前通知五個單位（每個分院都有領隊）：識別證、餐卷、火車票全部送到分院，由各小組長通知到分院領取，不用寄；善首、善覺、EPIC 發識別證、餐卷並收費；圓道另發火車票；新加坡比照、不發火車票；志工活動前報到；25日火車站與五間飯店報到；26日入場與下午四條線（大蒙山那條由法務組點名）；27日早上兩條線；27日中午火車站三線（台北、台中、高雄）。",link:"交通、飯店、文書、設計、餐食"},
+  {g:"交通",name:"交通組",scope:"火車三線（台北、台中、高雄，含來回）；遊覽車四段（25日火車站→五飯店、26日飯店→基地、26日下午四條線（中午離開／江賢二／三仙台 搭車出發；大蒙山留在原地，晚上結束後基地→飯店）、27日兩線）；自行安排（志工提前到＝25日之前自行抵達；與會者當天到）；25日當天到的志工隨火車。",link:"報到、飯店、設計（車身、舉牌）、法務（大蒙山）"},
+  {g:"飯店",name:"住宿組",scope:"每家飯店各一位負責工作人員，入住後回報入住房數與空房數，作為結算費用、調配空房、訂餐的依據。六處的房與早餐：亞灣住客（一般與會者，不是提前入住的志工）、亞灣志工（房：志工房／25日之前、與會者房／25日開始；另有 25日之前每日早餐）、銀河1、銀河2、立麗、桂田；各處 26日、27日早餐。",link:"餐食、報到、交通"},
+  {g:"餐食",name:"餐食組",scope:"五間飯店 26日、27日早餐（亞灣志工另含 25日之前每日早餐）；攤商（芊芊、素食小夜市）；星曜法師團隊；26日行程晚餐（三仙台、江賢二）。",link:"飯店、與會者（攤商）、交通（26日行程）"},
+  {g:"與會者",name:"名單組",scope:"九類與會者名單：地方首長（特照＝特別照客，地方首長、貴賓、諸山長老都有專人接待）、貴賓、諸山長老、僧團、外來法師、功德主、隨喜自費、在地民眾、攤商（星曜法師）。",link:"所有組（每一組都靠這份名單）"},
+  {g:"法務",name:"法務組",scope:"動土（主持、引禮—獻花／鏟子、香燈）；大蒙山（含留下者點名）；三皈五戒；牌位。",link:"交通（大蒙山結束後晚上的回飯店車）、場地"},
+  {g:"場地",name:"場地組",scope:"26日行李：基地設行李區、派人看管、跟車送。",link:"交通、報到"},
+  {g:"直播錄影",name:"直播錄影組",scope:"大典的直播與錄影（新設組）。",link:"法務（儀程時間表）"},
+  {g:"設計",name:"設計宣傳組",scope:"宣傳（內容、時程與宣傳圖；宣傳併入本組）；結緣品；報到用品（遊覽車車身、舉牌、個人識別）；表彰。",link:"宣傳、文書、交通、報到"},
+  {g:"文書",name:"文書組",scope:"表彰；個人識別。",link:"設計、報到、名單"}
+];
+// 待辦
+const TODO = [
+ ["事前","與會者","九類與會者名單分類定稿（地方首長、貴賓、諸山長老、僧團、外來法師、功德主、隨喜自費、在地民眾、攤商）"],
+ ["事前","與會者","特照（特別照客）：安排專人接待地方首長、貴賓、諸山長老"],
+ ["事前","與會者","攤商名單確認（含星曜法師）"],
+ ["事前","飯店","每家飯店（亞灣、銀河1、銀河2、立麗、桂田）各指派一位負責工作人員，入住後負責回報入住房數、空房數"],
+ ["事前","飯店","亞灣住客（一般與會者，不是提前入住的志工）：房間分配；26日、27日早餐"],
+ ["事前","飯店","亞灣志工：房（志工房／25日之前、與會者房／25日開始）；早餐（25日之前每日、26日、27日）"],
+ ["事前","飯店","銀河1：房間分配；26日、27日早餐"],
+ ["事前","飯店","銀河2：房間分配；26日、27日早餐"],
+ ["事前","飯店","立麗：房間分配；26日、27日早餐"],
+ ["事前","飯店","桂田：房間分配；26日、27日早餐"],
+ ["事前","交通","火車三線訂票與分組：台北、台中、高雄（含來回）"],
+ ["事前","交通","回程火車：27日中午台東火車站，兩列包車（台北線／台中高雄線）的車廂與分組；26日中午離開者從台東火車站另排車次"],
+ ["事前","交通","遊覽車：25日火車站 → 銀河1／銀河2／亞灣／立麗／桂田 車數與分車"],
+ ["事前","交通","遊覽車：26日飯店 → 基地 車數與分車"],
+ ["事前","交通","遊覽車：26日下午四條線，每人選哪條；中午離開／江賢二／三仙台 三條的出發車數"],
+ ["事前","交通","遊覽車：26日晚上 8:00 大蒙山結束後，基地 → 5家飯店的車數與分車"],
+ ["事前","交通","8 段車程依「⑥ 遊覽車編組」框架編車號；每車車長 1（由該車小組長中選出）＋小組長（每10人1位），每段總領隊 1"],
+ ["事前","交通","火車：每節車廂的車長由該車廂的小組長中選出"],
+ ["事前","交通","小蜜蜂（隨身擴音器）：每位車長（遊覽車、火車）與每位領隊各配一個，用來佈達事項；依車長＋領隊人數備齊"],
+ ["事前","交通","小蜜蜂發放與歸還登記（含充電、備用電池）"],
+ ["事前","交通","EPIC、善首已提供的領隊／小組長，在各行程繼續擔任；沒有人選的車由大會另行指派"],
+ ["事前","交通","遊覽車：27日兩線（惡地／博物館）每人選哪線、車數"],
+ ["事前","交通","自行安排名單：志工提前到（25日之前自行抵達，不是 25日當天）、與會者當天到"],
+ ["事前","交通","25日當天到的志工併入火車分組，隨火車一起來"],
+ ["事前","餐食","五間飯店 26日、27日早餐份數（亞灣、銀河1、銀河2、立麗、桂田）；亞灣志工另含 25日之前每日早餐"],
+ ["事前","餐食","攤商供餐：芊芊、素食小夜市"],
+ ["事前","餐食","星曜法師團隊供餐安排"],
+ ["事前","餐食","26日行程晚餐：三仙台、江賢二 兩處訂餐"],
+ ["事前","法務","動土：主持人確定"],
+ ["事前","法務","動土：引禮—獻花、鏟子 備品與人員"],
+ ["事前","法務","動土：香燈"],
+ ["事前","法務","大蒙山準備"],
+ ["事前","法務","三皈五戒準備"],
+ ["事前","法務","牌位製作"],
+ ["事前","文書","表彰：名單與內容"],
+ ["事前","文書","個人識別：設計出版型後套名單印製，依分院分裝送到各分院"],
+ ["事前","設計","宣傳圖"],
+ ["事前","設計","結緣品設計"],
+ ["事前","設計","報到用品：遊覽車車身、舉牌、個人識別版型"],
+ ["事前","設計","表彰版型"],
+ ["事前","設計","宣傳內容與時程（宣傳併入設計組，同一位窗口）"],
+ ["事前","直播錄影","新設直播錄影組、指派組長，與法務組對儀程時間表"],
+ ["事前","報到","事前通知 善首：個人識別證、餐卷、繳交費用（3000元隨喜／其他自費1000/晚/床／桂田自費）"],
+ ["事前","報到","事前通知 圓道：個人識別證、餐卷、火車票、繳交費用（3000元隨喜／桂田自費／其他自費1000/晚/床）"],
+ ["事前","報到","事前通知 善覺：餐卷、個人識別證、繳交費用（3000元隨喜／桂田自費／其他自費1000/晚/床）"],
+ ["事前","報到","事前通知 EPIC：餐卷、個人識別證、繳交費用（3000元隨喜／桂田自費／其他自費1000/晚/床）"],
+ ["事前","報到","事前通知 新加坡：個人識別證、餐卷、繳交費用（比照圓道，不發火車票）"],
+ ["事前","報到","確認每個分院的領隊（就是分院會長，分院總帶隊）；識別證、餐卷、火車票送到各分院"],
+ ["事前","報到","各小組長通知組員到分院領取（不用寄）"],
+ ["事前","報到","志工活動前報到"],
+ ["事前","場地","26日行李：基地設行李區、派人看管、跟車送（26日退房者）"],
+ ["12/25","交通","火車三線抵達（25日當天到的志工隨火車一起來）"],
+ ["12/25","報到","25日火車站報到"],
+ ["12/25","交通","遊覽車火車站 → 五間飯店"],
+ ["12/25","報到","25日飯店報到：銀河1、銀河2、亞灣、立麗、桂田"],
+ ["12/25","飯店","入住（亞灣志工自 25日起改住與會者房）"],
+ ["12/25","飯店","亞灣：負責工作人員回報入住房數、空房數"],
+ ["12/25","飯店","銀河1：負責工作人員回報入住房數、空房數"],
+ ["12/25","飯店","銀河2：負責工作人員回報入住房數、空房數"],
+ ["12/25","飯店","立麗：負責工作人員回報入住房數、空房數"],
+ ["12/25","飯店","桂田：負責工作人員回報入住房數、空房數"],
+ ["12/25","飯店","依各飯店回報結算房費、調配空房"],
+ ["12/25","餐食","依各飯店回報的入住數調整 26日、27日早餐訂餐"],
+ ["12/26","交通","飯店 → 基地；與會者當天自行到"],
+ ["12/26","報到","26日入場報到"],
+ ["12/26","法務","動土儀程：主持、引禮（獻花、鏟子）、香燈"],
+ ["12/26","場地","26日行李"],
+ ["12/26","飯店","各飯店 26日早餐"],
+ ["12/26","餐食","攤商、星曜法師團隊供餐"],
+ ["12/26","報到","26日下午分線報到：中午離開、三仙台、江賢二"],
+ ["12/26","交通","下午四條線：中午離開（開到台東火車站）／江賢二／三仙台 搭車出發；大蒙山留在原地"],
+ ["12/26","餐食","行程晚餐：三仙台、江賢二"],
+ ["12/26","法務","大蒙山；留在基地參加者由法務組點名（不另設報到）"],
+ ["12/26","交通","晚上 8:00 大蒙山結束，遊覽車送回5家飯店"],
+ ["12/27","飯店","各飯店 27日早餐"],
+ ["12/27","報到","27日早上分線報到：惡地、博物館"],
+ ["12/27","報到","27日中午台東火車站報到：台北線、台中高雄線兩列包車"],
+ ["12/27","交通","27日早上兩線：惡地／博物館，中午送到台東火車站搭兩列包車回程（台北線／台中高雄線）"]
+];
+const FACTS=[["行程", "12/26 下午分四條線：<b>中午離開</b>（開到台東火車站）、<b>江賢二</b>、<b>三仙台</b>三條下午搭遊覽車出發；<b>參加大蒙山</b>的留在原地，晚上 8:00 坐遊覽車回 5 家飯店。"], ["行程", "三仙台、江賢二兩條線有行程晚餐。留在基地參加大蒙山的人由法務組點名，不另設報到。"], ["行程", "12/27 早上分兩線：惡地、博物館；中午到<b>台東火車站</b>，搭<b>兩列包車火車</b>回程（台北線、台中高雄線）。"], ["幹部", "<b>領隊</b>就是各分院的會長（分院總帶隊）。每 10 人一小組、每組一位<b>小組長</b>。<b>車長</b>（火車車長、遊覽車車長）由小組長中選出。"], ["設備", "每位車長（遊覽車、火車）與每位領隊各配一個<b>小蜜蜂</b>（隨身擴音器），用來佈達事項。"], ["領取", "每個分院都有領隊。識別證、餐卷、火車票<b>全部到分院領取，不用寄</b>，由各小組長通知大家來領。"], ["領取", "火車票只有圓道發。善首、善覺、EPIC 發識別證、餐卷並收費；新加坡比照，不發火車票。"], ["費用", "繳交費用分三種：3000 元隨喜；桂田自費；其他自費 1000 元／晚／床。"], ["識別證", "流程：設計宣傳組出版型 → 文書組套名單印製 → 依分院分裝送到各分院 → 小組長通知領取。"], ["志工", "「提前到」的志工是 25 日之前就自行抵達；25 日當天到的志工隨火車一起來。亞灣志工 25 日之前住志工房、每日早餐，25 日開始住與會者房。"], ["飯店", "入住後，每家飯店的負責工作人員要回報<b>入住房數、空房數</b>，用來結算費用、調配空房、訂餐。各飯店都有 26、27 日早餐。"], ["接待", "「特照」＝特別照客，專人接待地方首長、貴賓、諸山長老。"], ["場地", "26 日行李：基地設行李區，派人看管、跟車送。"], ["分組", "宣傳併入設計宣傳組；新設直播錄影組。"]];
+
+// ===== 狀態（要放最前面，下面的函式會用到） =====
+const TN={arch:"架構圖",flow:"三天動線",groups:"工作分組",todo:"待辦事項",ask:"重要說明",bus:"遊覽車編組"};let cur="arch";
+// ===== 工具 =====
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const GN=g=>(GROUPS.find(x=>x.g===g)||{name:g}).name;
+const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function count(n){return (n||[]).reduce((a,x)=>a+1+(Array.isArray(x)?count(x[1]):0),0)}
+function ul(n){if(!n||!n.length)return '<ul><li class="src">（未展開細項）</li></ul>';return '<ul>'+n.map(x=>Array.isArray(x)?`<li>${esc(x[0])}${ul(x[1])}</li>`:`<li>${esc(x)}</li>`).join('')+'</ul>'}
+
+// ===== 架構圖 =====
+$('#clusters').innerHTML=CLUSTERS.map(c=>`<div class="cluster" style="--cc:var(${c.c})"><div class="ct">${esc(c.name)}<small>${esc(c.sub)}</small></div>`+
+ c.b.map(b=>`<div class="branch" data-s="${esc(b)}"><button aria-expanded="true">${esc(b)} <span class="n">${count(XM[b])} 項 ▾</span></button>${ul(XM[b])}</div>`).join('')+`</div>`).join('');
+$$('.branch>button').forEach(b=>b.onclick=()=>{const p=b.parentNode;p.classList.toggle('closed');b.setAttribute('aria-expanded',!p.classList.contains('closed'))});
+$('#links').innerHTML=LINKS.map(l=>`<div class="card" data-s><h3>${esc(l.k)}</h3><div>${l.w.map(w=>`<span class="chip">${esc(w)}</span>`).join('')}</div><div class="who">${esc(l.s)}</div></div>`).join('');
+// ===== 動線 =====
+$('#flowBox').innerHTML=FLOW.map(f=>`<div class="day"><div class="d">${f.d}<small>${f.sub}</small></div><div class="steps">`+f.s.map((s,i)=>`${i?'<span class="arr">→</span>':''}<span class="step" data-s><b>${esc(GN(s[0]))}</b>${esc(s[1])}</span>`).join('')+`</div></div>`).join('');
+// ===== 分組 =====
+$('#grpBox').innerHTML=GROUPS.map((g,i)=>`<div class="card grp" id="g-${i}" data-s><h3>${i+1}. ${esc(g.name)}</h3><dl class="kv">
+<dt>組長</dt><dd>（另行公布）</dd>
+<dt>負責範圍</dt><dd>${esc(g.scope)}</dd>
+<dt>要對接</dt><dd>${esc(g.link)}</dd>
+<dt>待辦</dt><dd>${TODO.filter(t=>t[1]===g.g).length} 件 <a href="#" data-goto="${esc(g.g)}">看這組的待辦 ›</a></dd></dl></div>`).join('');
+// ===== 待辦 =====
+const done=store.get('dt-todo')||{};
+const order=["事前","12/25","12/26","12/27"];
+let gsel="全部";
+function renderTodo(){
+  $('#todoBox').innerHTML=order.map(p=>{const it=TODO.map((t,i)=>[t,i]).filter(([t])=>t[0]===p&&(gsel==="全部"||t[1]===gsel));
+   if(!it.length)return '';return `<div class="phase"><h2>${p==="事前"?"事前準備":p}</h2>`+it.map(([t,i])=>`<div class="todo${done[i]?' done':''}${t[3]?' q':''}" data-s><input type="checkbox" id="c${i}" ${done[i]?'checked':''} data-i="${i}"><label for="c${i}"><span class="t">${esc(t[2])}</span><span class="g">${esc(GN(t[1]))}</span></label></div>`).join('')+'</div>'}).join('');
+  $$('#todoBox input').forEach(c=>c.onchange=()=>{const i=c.dataset.i;if(c.checked)done[i]=1;else delete done[i];store.set('dt-todo',done);c.closest('.todo').classList.toggle('done',c.checked);prog()});
+  prog(); applySearch();
+}
+function prog(){const n=Object.keys(done).length;$('#prog').textContent=`　已完成 ${n}／${TODO.length}`}
+const gnames=["全部",...GROUPS.map(g=>g.g)];
+$('#gf').innerHTML=gnames.map(g=>`<button aria-pressed="${g==="全部"}" data-g="${esc(g)}">${esc(g==="全部"?g:GN(g))}${g==="全部"?'':' '+TODO.filter(t=>t[1]===g).length}</button>`).join('');
+$$('#gf button').forEach(b=>b.onclick=()=>setG(b.dataset.g));
+function setG(g){gsel=g;$$('#gf button').forEach(x=>x.setAttribute('aria-pressed',x.dataset.g===g));renderTodo();crumb()}
+renderTodo();
+$$('[data-goto]').forEach(a=>a.onclick=e=>{e.preventDefault();show('todo');setG(a.dataset.goto);scrollTo(0,0)});
+// ===== 遊覽車編組 =====
+const HOTELS=["亞灣","銀河1","銀河2","立麗","桂田"];
+const BUS=[
+ {c:"25接駁",t:"12/25",r:"火車站 → 5家飯店",by:"依飯店分車（各回各的飯店）",h:1},
+ {c:"26去程",t:"12/26 早上",r:"5家飯店 → 基地",by:"依飯店分車（各飯店上車）",h:1},
+ {c:"26大蒙山",t:"12/26 晚上 8:00",r:"下午留在基地參加大蒙山 → 晚上 8:00 回5家飯店",by:"依飯店分車",h:1},
+ {c:"26三仙台",t:"12/26 中午",r:"基地 → 三仙台 → 回5家飯店",by:"依飯店分車（不同飯店不同車）",h:1},
+ {c:"26江賢二",t:"12/26 中午",r:"基地 → 江賢二 → 回5家飯店",by:"依飯店分車（不同飯店不同車）",h:1},
+ {c:"26離開",t:"12/26 中午",r:"基地 → 台東火車站",by:"不回飯店",h:0},
+ {c:"27惡地",t:"12/27",r:"飯店 → 惡地 → 台東火車站，搭兩列包車火車（台北線／台中高雄線）",by:"依「回程火車線＋上車飯店」分車，每台只接一家飯店",h:2},
+ {c:"27博物館",t:"12/27",r:"飯店 → 博物館 → 台東火車站，搭兩列包車火車（台北線／台中高雄線）",by:"依「回程火車線＋上車飯店」分車，每台只接一家飯店",h:2}
+];
+const BUSRULES=[
+ "<b>領隊</b>就是各分院的<b>會長</b>（分院總帶隊），負責整個分院，不固定在某一台車。",
+ "每段車程設 1 位<b>總領隊</b>；每 10 人一小組、每組 1 位<b>小組長</b>（每車約 4 組）；每輛車設 1 位<b>車長</b>，由該車的小組長中選出。火車每節車廂的車長也一樣，由小組長中選出。",
+ "車號照「行程－飯店＋序號」編，例如「26三仙台－立麗1」「27惡地－桂田2」。",
+ "車長、小組長一定是<b>本人有選這個行程、住這家飯店</b>的人，坐的就是自己帶的那台車；同一時段一人只在一台車上。",
+ "<b>EPIC、善首已提供的領隊／小組長人選，在每個行程繼續擔任</b>：領隊照常帶自己的分院；小組長 25日、26日早上帶自己飯店的車，26日中午、27日跟著本人選的行程，帶那條線上自己飯店的車。",
+ "不為了補幹部去改任何人的行程或飯店；某台車沒有合適人選時，由大會另行指派。",
+ "每位<b>車長</b>（遊覽車、火車）與每位<b>領隊</b>各配一個<b>小蜜蜂</b>（隨身擴音器），用來在車上與集合時佈達事項。",
+ "其他：同分院同進同出、家庭與指名同車不拆、遊覽車不順路停別家飯店。"
+];
+$('#busRules').innerHTML=BUSRULES.map(x=>`<li>${x}</li>`).join('');
+$('#busBox').innerHTML=BUS.map(b=>`<div class="card bus" data-s><h3>${esc(b.c)}　<span class="src">${esc(b.t)}</span></h3>
+<div class="route">${esc(b.r)}</div><div class="src">分車依據：${esc(b.by)}　｜　幹部：總領隊 1；每車 車長 1（小組長中選出）＋小組長（每10人1位）</div>
+<div class="hot">${b.h===1?HOTELS.map(h=>`<div><b>${esc(h)}</b>車數、車長、小組長：另行公布</div>`).join(''):b.h===2?['台北線','台中高雄線'].map(l=>HOTELS.map(h=>`<div><b>${l}・${esc(h)}</b>車數、車長、小組長：另行公布</div>`).join('')).join(''):`<div><b>基地 → 台東火車站</b>車數、車長、小組長：另行公布</div>`}</div></div>`).join('');
+const BUSASK=[
+];
+
+// ===== 重要說明 =====
+$('#askBox').innerHTML='<div class="card" data-s><ul class="rules">'+FACTS.map(f=>`<li><span class="chip">${f[0]}</span>${f[1]}</li>`).join('')+'</ul></div>';
+
+// ===== 分頁、麵包屑、搜尋 =====
+function show(t){cur=t;$$('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));$$('section.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));crumb();applySearch();store.set('dt-tab',t)}
+function crumb(){$('#crumb').innerHTML=`目前位置：<a href="#" id="home">動土大典</a> › <b>${TN[cur]}</b>`+(cur==='todo'&&gsel!=='全部'?` › <b>${esc(GN(gsel))}</b> <a href="#" id="up">（回上一層）</a>`:'');
+ $('#home').onclick=e=>{e.preventDefault();show('arch')};const u=$('#up');if(u)u.onclick=e=>{e.preventDefault();setG('全部')}}
+$$('nav.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.t));
+function applySearch(){const q=$('#q').value.trim();
+ $$('mark').forEach(m=>m.replaceWith(m.textContent));
+ const sec=$('#t-'+cur);
+ sec.querySelectorAll('[data-s],.branch').forEach(el=>{if(!q){el.classList.remove('hide');return}const hit=el.textContent.includes(q);el.classList.toggle('hide',!hit);if(hit)hl(el,q)});
+ sec.querySelectorAll('.phase').forEach(p=>p.classList.toggle('hide',!!q&&!p.querySelector('.todo:not(.hide)')));
+ sec.querySelectorAll('.cluster').forEach(c=>c.classList.toggle('hide',!!q&&!c.querySelector('.branch:not(.hide)')));
+ sec.querySelectorAll('.day').forEach(d=>d.classList.toggle('hide',!!q&&!d.querySelector('.step:not(.hide)')));
+}
+function hl(el,q){const w=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);const ns=[];while(w.nextNode())ns.push(w.currentNode);
+ ns.forEach(n=>{const i=n.data.indexOf(q);if(i<0||n.parentNode.tagName==='TEXTAREA')return;const r=document.createRange();r.setStart(n,i);r.setEnd(n,i+q.length);const m=document.createElement('mark');r.surroundContents(m)})}
+$('#q').addEventListener('input',applySearch);$('#qx').onclick=()=>{$('#q').value='';applySearch()};
+// 收合、深色、頂端
+function hh(){document.documentElement.style.setProperty('--hh',$('#hd').offsetHeight+'px')}
+$('#foldBtn').onclick=()=>{const h=$('#hd');h.classList.toggle('collapsed');const c=h.classList.contains('collapsed');$('#foldBtn').textContent=c?'展開':'收合';$('#foldBtn').setAttribute('aria-expanded',!c);hh()};
+$('#themeBtn').onclick=()=>{const r=document.documentElement;const dark=r.dataset.theme?r.dataset.theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;r.dataset.theme=dark?'light':'dark';store.set('dt-theme',r.dataset.theme)};
+const th=store.get('dt-theme');if(th)document.documentElement.dataset.theme=th;
+$('#toTop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
+addEventListener('resize',hh);hh();
+const lt=store.get('dt-tab');if(lt&&TN[lt])show(lt);else crumb();
+</script>
+</body>
+</html>
