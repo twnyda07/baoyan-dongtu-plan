@@ -340,7 +340,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",
 const GN=g=>(GROUPS.find(x=>x.g===g)||{name:g}).name;
 const store={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
 function count(n){return (n||[]).reduce((a,x)=>a+1+(Array.isArray(x)?count(x[1]):0),0)}
-function ul(n){if(!n||!n.length)return '<ul><li class="src">（未展開細項）</li></ul>';return '<ul>'+n.map(x=>Array.isArray(x)?`<li>${esc(x[0])}${ul(x[1])}</li>`:`<li>${esc(x)}</li>`).join('')+'</ul>'}
+function ul(n){if(!n||!n.length)return '<ul><li class="src">（細項另行公布）</li></ul>';return '<ul>'+n.map(x=>Array.isArray(x)?`<li>${esc(x[0])}${ul(x[1])}</li>`:`<li>${esc(x)}</li>`).join('')+'</ul>'}
 
 // ===== 架構圖 =====
 $('#clusters').innerHTML=CLUSTERS.map(c=>`<div class="cluster" style="--cc:var(${c.c})"><div class="ct">${esc(c.name)}<small>${esc(c.sub)}</small></div>`+
