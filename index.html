@@ -78,6 +78,12 @@ p.lead{color:var(--sub);margin:4px 0 14px}
 .step{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:6px 10px;font-size:15px}
 .step b{display:block;font-size:12px;color:var(--sub);font-weight:400}
 .arr{color:var(--sub)}
+.dbody{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:6px 14px 10px}
+.dbody h4{font-size:16px;margin:10px 0 4px;color:var(--accent)}
+.dbody ul{list-style:none;margin:0;padding:0}
+.dbody li.step{background:none;border:0;border-bottom:1px dashed var(--line);border-radius:0;padding:6px 0;font-size:16px;line-height:1.6}
+.dbody li.step:last-child{border-bottom:0}
+.dbody .chip{font-size:13px;margin-right:8px;vertical-align:1px}
 @media (max-width:600px){.day{grid-template-columns:1fr}.day .d{text-align:left}}
 /* 連動 */
 .link{display:grid;grid-template-columns:1fr;gap:4px}
@@ -165,7 +171,7 @@ footer{color:var(--sub);font-size:13px;margin-top:30px;border-top:1px solid var(
 
 <!-- ② 三天動線 -->
 <section class="tab" id="t-flow">
-  <p class="lead">三天的工作照時間順序排成一條線，每一格標出由哪一組負責。</p>
+  <p class="lead">三天的工作依日期、時段分開列，每一項前面標出由哪一組負責。</p>
   <div class="flow" id="flowBox"></div>
   <div class="note">各段的具體時間（幾點發車、幾點報到）另行公布。</div>
 </section>
@@ -240,10 +246,21 @@ const LINKS = [
   {k:"桂田自費、表彰",w:["住宿組","報到組","設計宣傳組","文書組"],s:"住桂田的人由報到組先收費；表彰由設計宣傳組做版型、文書組出名單與內容。"}
 ];
 const FLOW = [
-  {d:"事前",sub:"活動前",s:[["報到","事前通知：善首／善覺／EPIC／圓道／新加坡"],["設計","識別證出版型"],["文書","套名單印製"],["報到","各分院領隊收齊物品；小組長通知到分院領取識別證、餐卷、火車票；收費"],["報到","志工活動前報到"],["交通","志工提前到：25日之前自行抵達"],["飯店","亞灣志工：25日之前住志工房、每日早餐"]]},
-  {d:"12/25",sub:"抵達",s:[["交通","火車：台北／台中／高雄（25日到的志工同車）"],["報到","火車站報到"],["交通","遊覽車：火車站 → 五間飯店"],["報到","飯店報到（銀河1／銀河2／亞灣／立麗／桂田）"],["飯店","入住（亞灣志工改住與會者房）"],["飯店","各飯店負責人回報入住房數、空房數"],["飯店","結算費用、調配空房"],["餐食","調整早餐訂餐"]]},
-  {d:"12/26",sub:"動土",s:[["飯店","早餐"],["交通","飯店 → 基地（另有與會者當天自行到）"],["報到","入場報到"],["與會者","特照：專人接待地方首長、貴賓、諸山長老"],["法務","動土：主持、引禮（獻花、鏟子）、香燈"],["場地","26日行李：基地行李區"],["餐食","攤商：芊芊、素食小夜市、星曜法師團隊"],["交通","下午四條線：中午離開／江賢二／三仙台 搭車出發"],["餐食","行程晚餐：三仙台、江賢二"],["法務","第四條線大蒙山：留在原地（法務組點名）"],["交通","晚上 8:00 大蒙山結束 → 遊覽車回5家飯店"]]},
-  {d:"12/27",sub:"參訪・回程",s:[["飯店","早餐"],["報到","早上分線報到"],["交通","早上兩線：惡地／博物館"],["報到","中午台東火車站報到：兩列包車（台北線／台中/高雄線）"],["交通","回程火車"]]}
+ {d:"事前",sub:"活動前",p:[
+  ["通知與領取",[["報到","通知各分院：善首、善覺、EPIC、圓道、新加坡"],["設計","出識別證版型"],["文書","套名單印製，依分院分裝"],["報到","送到各分院，小組長通知組員來領識別證、餐卷、火車票；收費"]]],
+  ["志工",[["交通","提前到的志工 25 日之前自行抵達"],["飯店","亞灣志工 25 日之前住志工房、每日早餐"],["報到","志工活動前報到"]]]]},
+ {d:"12/25",sub:"抵達",p:[
+  ["火車到站",[["交通","火車：台北、台中、高雄（25 日當天到的志工同車）"],["報到","火車站報到"]]],
+  ["到飯店",[["交通","遊覽車：火車站 → 五間飯店"],["報到","飯店報到：亞灣、銀河1、銀河2、立麗、桂田"],["飯店","入住（亞灣志工改住與會者房）"]]],
+  ["入住後",[["飯店","各飯店負責人回報入住房數、空房數 → 結算費用、調配空房"],["餐食","依回報調整早餐份數"]]]]},
+ {d:"12/26",sub:"動土",p:[
+  ["早上",[["飯店","飯店早餐"],["交通","遊覽車：五間飯店 → 基地（另有與會者當天自行到）"],["報到","入場報到"],["與會者","特照：專人接待地方首長、貴賓、諸山長老"]]],
+  ["典禮",[["法務","動土：主持、引禮（獻花、鏟子）、香燈"],["場地","基地行李區"],["餐食","攤商：芊芊、素食小夜市、星曜法師團隊"]]],
+  ["下午四條線",[["交通","中午離開（開到台東火車站）、江賢二、三仙台：搭遊覽車出發"],["餐食","三仙台、江賢二：行程晚餐"],["法務","參加大蒙山：留在基地，法務組點名"]]],
+  ["晚上",[["交通","8:00 大蒙山結束 → 遊覽車回五間飯店"]]]]},
+ {d:"12/27",sub:"參訪・回程",p:[
+  ["早上",[["飯店","飯店早餐"],["報到","分線報到"],["交通","遊覽車：飯店 → 惡地或博物館"]]],
+  ["中午",[["報到","台東火車站報到"],["交通","兩列包車回程：台中/高雄線 6666 次 12:38、台北線 6617 次 13:03"]]]]}
 ];
 // 工作分組
 const GROUPS = [
@@ -404,7 +421,7 @@ $('#fullTree').innerHTML=CLUSTERS.map(c=>`<div class="cluster" style="--cc:var($
 $$('.branch>button').forEach(b=>b.onclick=()=>{const p=b.parentNode;p.classList.toggle('closed');b.setAttribute('aria-expanded',!p.classList.contains('closed'))});
 $('#links').innerHTML='<div class="lk">'+LINKS.map(l=>`<div class="card" data-s><h3>${esc(l.k)}</h3><div class="who">${esc(l.s)}</div><div>${l.w.map(w=>`<span class="chip">${esc(w)}</span>`).join('')}</div></div>`).join('')+'</div>';
 // ===== 動線 =====
-$('#flowBox').innerHTML=FLOW.map(f=>`<div class="day"><div class="d">${f.d}<small>${f.sub}</small></div><div class="steps">`+f.s.map((s,i)=>`${i?'<span class="arr">→</span>':''}<span class="step" data-s><b>${esc(GN(s[0]))}</b>${esc(s[1])}</span>`).join('')+`</div></div>`).join('');
+$('#flowBox').innerHTML=FLOW.map(f=>`<div class="day"><div class="d">${f.d}<small>${f.sub}</small></div><div class="dbody">`+f.p.map(([t,items])=>`<h4>${esc(t)}</h4><ul>${items.map(x=>`<li class="step" data-s><span class="chip">${esc(GN(x[0]))}</span>${esc(x[1])}</li>`).join('')}</ul>`).join('')+`</div></div>`).join('');
 // ===== 分組 =====
 $('#grpBox').innerHTML=GROUPS.map((g,i)=>`<div class="card grp" id="g-${i}" data-s><h3>${i+1}. ${esc(g.name)}</h3><dl class="kv">
 <dt>組長</dt><dd>（另行公布）</dd></dl>
