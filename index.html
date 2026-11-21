@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<title>動土大典 架構與分組</title>
+<title>動土大典 架構與分組・工作人員說明</title>
 <style>
 :root{
   --bg:#f7f4ec; --card:#fffdf8; --ink:#2b2a27; --sub:#6b665c; --line:#ddd6c6;
@@ -129,17 +129,43 @@ mark{background:#f3dc8a;color:#2b2a27;border-radius:3px}
 .top{position:fixed;right:16px;bottom:16px;z-index:30}
 footer{color:var(--sub);font-size:13px;margin-top:30px;border-top:1px solid var(--line);padding-top:10px}
 @media print{header,.top,.filters,.search{display:none!important}section.tab{display:block!important}.branch.closed ul{display:block!important}body{font-size:13px}.card,.todo,.cluster{break-inside:avoid}}
+/* STAFF:BEGIN */
+/* 工作人員說明 */
+.staffgo{border:2px solid var(--accent);background:var(--accent-soft)}
+.staffgo b{font-size:18px;color:var(--accent)}
+.aud-pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin:6px 0 10px}
+.aud-pick button{min-height:76px;text-align:left;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:12px 16px;font-size:19px;font-weight:700;cursor:pointer;font-family:inherit}
+.aud-pick button:hover,.aud-pick button:focus-visible{border-color:var(--accent)}
+.aud-pick button span{display:block;font-weight:400;font-size:15px;color:var(--sub);margin-top:4px;line-height:1.5}
+.aud{display:none}.aud.on{display:block}
+.aud h2.ah{margin:6px 0 4px}
+@media (max-width:600px){.hrow h1 small{display:none}}
+.upbtn{min-height:44px;padding:0 14px;border:1px solid var(--line);background:var(--card);color:var(--accent);border-radius:22px;font-size:16px;cursor:pointer;font-family:inherit}
+.toc{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 4px}
+.toc a{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid var(--line);border-radius:22px;background:var(--card);color:var(--ink);text-decoration:none;font-size:15px}
+.sx{scroll-margin-top:calc(var(--hh,140px) + 10px)}
+.sx h3{font-size:19px;margin:0 0 6px}
+.sx h4{font-size:16px;margin:12px 0 4px;color:var(--accent)}
+.sx ul,.sx ol{margin:0;padding-left:24px}
+.sx li{margin:4px 0}
+.sx p{margin:6px 0}
+.ex{display:inline-block;background:var(--chip);border-radius:6px;padding:0 6px;font-weight:600}
+.quote{border-left:4px solid var(--accent);background:var(--accent-soft);border-radius:8px;padding:8px 12px;margin:8px 0}
+.quote small{color:var(--sub)}
+@media print{.aud{display:block!important}.aud-pick,.upbtn,.toc{display:none!important}}
+/* STAFF:END */
 </style>
 </head>
 <body>
 <header id="hd">
   <div class="hrow">
-    <h1>寶嚴禪寺開山動土大典<small>架構圖 ｜ 三天動線 ｜ 工作分組 ｜ 待辦事項 ｜ 遊覽車編組（2026-11-17 更新）</small></h1>
+    <h1>寶嚴禪寺開山動土大典<small>工作人員說明 ｜ 架構圖 ｜ 三天動線 ｜ 工作分組 ｜ 待辦事項 ｜ 遊覽車編組（2026-11-21 更新）</small></h1>
     <button class="ibtn" id="themeBtn" aria-label="切換深淺色">◐</button>
     <button class="ibtn" id="foldBtn" aria-expanded="true" aria-label="收合頂端">收合</button>
   </div>
   <div class="hmore">
     <nav class="tabs" role="tablist">
+      <!-- STAFF:BEGIN --><button role="tab" data-t="staff">★ 工作人員說明</button><!-- STAFF:END -->
       <button role="tab" data-t="arch" aria-selected="true">① 架構圖</button>
       <button role="tab" data-t="flow">② 三天動線</button>
       <button role="tab" data-t="groups">③ 工作分組</button>
@@ -154,8 +180,409 @@ footer{color:var(--sub);font-size:13px;margin-top:30px;border-top:1px solid var(
 
 <div class="wrap">
 
+<!-- STAFF:BEGIN -->
+<!-- ★ 工作人員說明（1121 加：給司儀主持人、小組長車長領隊、報到櫃台、各組看的說明，白話、條列） -->
+<section class="tab" id="t-staff">
+  <p class="lead">依你的工作點一類。每一類都是「主題＋條列」；跟現場不一樣、或看不懂，就問你的上一層（小組長 → 車長 → 領隊 → 指揮中心）。</p>
+  <div class="aud-pick" id="audPick">
+    <button type="button" data-aud="mc">司儀・主持人<span>唱名名單怎麼看、鏟子給家人時怎麼唱、綵排與主持時段</span></button>
+    <button type="button" data-aud="ldr">小組長・車長・領隊<span>行前四件事、教組員查行程、手機報到與回報、三天點名時間</span></button>
+    <button type="button" data-aud="desk">報到櫃台<span>掃小卡、正式報到、信眾自助報到、按錯了怎麼改</span></button>
+    <button type="button" data-aud="other">其他各組<span>進後台、列印下載、空房查詢、待聯絡清單、飯店與行李</span></button>
+  </div>
+
+  <!-- ===== 司儀・主持人 ===== -->
+  <div class="aud" id="aud-mc">
+    <h2 class="ah">司儀・主持人</h2>
+    <button type="button" class="upbtn">‹ 回上一層（選工作類別）</button>
+    <nav class="toc"><a href="#mc1">唱名名單四段</a><a href="#mc2">鏟子給同行者時</a><a href="#mc3">梯次與綵排</a><a href="#mc4">主持人</a><a href="#mc5">名單去哪拿</a></nav>
+
+    <div class="card sx" id="mc1" data-s><h3>唱名名單：分四段，照順序念</h3>
+      <ul>
+        <li>每換一段，名單上會有一列「── 一、… ──」，翻到那一列就是換段。</li>
+        <li><b>一、VIP</b>：先唱。</li>
+        <li><b>二、出席者</b>：依鏟土順序，一梯一梯唱。</li>
+        <li><b>三、工作人員</b>：最後一梯。</li>
+        <li><b>四、只入座</b>：沒有動土編號的人，<b>不上台、不唱名</b>；列出來只是讓帶位知道他坐哪裡。</li>
+      </ul>
+      <h4>念什麼</h4>
+      <ul>
+        <li>「唱名文字（司儀照這句念）」那一欄就是要念的整句（姓名、委員級別、認供項目、護法會執事），照念即可。</li>
+        <li>一般是一筆報名唱一次；同行家人的人數寫在「同行」欄，不逐一唱。</li>
+        <li>鏟子給了同行者的那幾筆，唱法看下一張。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="mc2" data-s><h3>有人把鏟子給同行的家人或朋友時</h3>
+      <p>有些報名者自己不上台，把鏟子給同行的家人或朋友；也有人自己拿一支，另外再給同行者一支。這時<b>所有名單都印「實際拿鏟子的那一位」</b>：</p>
+      <ul>
+        <li>鏟土順序名單、唱名名單、座位卡、個人小卡（通知單）、後台統計，都印持鏟人本人的姓名與號碼。</li>
+      </ul>
+      <h4>唱名怎麼念（甲＝報名者，乙＝拿鏟子的同行者）</h4>
+      <ul>
+        <li><b>甲自己不持鏟</b>：唱乙。名單上寫成 <span class="ex">乙（甲 同行）</span>，照念。</li>
+        <li><b>甲自己也持鏟，另外給了乙</b>：先唱甲，句子後面會多一段 <span class="ex">同行持鏟：乙 331</span>，一起念。</li>
+      </ul>
+      <h4>名單與座位卡上看到的</h4>
+      <ul>
+        <li>甲自己不持鏟時，甲那一列印 <span class="ex">只入座（不上台鏟土）</span>，並註明誰拿鏟、幾號，例如 <span class="ex">587（乙 持鏟）</span>。甲坐在位子上，不上台。</li>
+        <li>同行者有自己的號碼時，<b>座位卡一律印他自己的號碼和梯位</b>，跟鏟土名單一致。帶上台時看座位卡上的號碼就對。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="mc3" data-s><h3>鏟土梯次與綵排</h3>
+      <ul>
+        <li><b>12/25 晚上 7:30～9:00 綵排</b>：照 12/26 正式儀程，口令與梯次完整走一次。</li>
+        <li><b>12/26 典禮</b>：儀程口令、致詞唱名、鏟土梯次唱名。</li>
+        <li>每梯約 5 分鐘；一般大眾每梯 108 人。</li>
+        <li>工作人員是最後一梯。</li>
+        <li>沒有動土編號的人「只入座」：不上台、不唱名。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="mc4" data-s><h3>主持人</h3>
+      <ul>
+        <li><b>12/25 晚上 6:00～7:30 歡迎晚宴</b>主持；結束前宣布 12/26 早上的出發時間與車號（出發時間另行公布）。</li>
+        <li>12/26 下午分<b>四條線</b>：中午離開（開到台東火車站）、三仙台、江賢二三條，下午 2:00 從會場搭車出發；<b>參加大蒙山的人留在原地</b>，用完晚餐後坐遊覽車回飯店。</li>
+        <li>12/27：早上 8:30 飯店集合（惡地或博物館），12:00 前到台東火車站，坐兩列包車火車回程。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="mc5" data-s><h3>名單去哪拿</h3>
+      <ul>
+        <li>唱名名單、鏟土順序與座位、座位圖、座位卡：後台「下載名單」都有（PDF／Excel）。請有後台帳號的工作人員下載、印給你。</li>
+        <li>唱名名單的 PDF 是<b>一人一張卡的大字版</b>（姓名、唱名文字都放大），台上好念。</li>
+        <li>名單上有姓名與電話，用完收回，<b>不要轉傳、不要拍照外流</b>。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== 小組長・車長・領隊 ===== -->
+  <div class="aud" id="aud-ldr">
+    <h2 class="ah">小組長・車長・領隊</h2>
+    <button type="button" class="upbtn">‹ 回上一層（選工作類別）</button>
+    <nav class="toc"><a href="#ld1">誰是誰</a><a href="#ld2">小組長四件事</a><a href="#ld3">教組員查行程</a><a href="#ld4">打開小組長頁</a><a href="#ld5">要回報哪幾段</a><a href="#ld6">小組長怎麼勾</a><a href="#ld7">車長</a><a href="#ld8">領隊</a><a href="#ld9">三天點名時間</a></nav>
+
+    <div class="card sx" id="ld1" data-s><h3>誰是誰</h3>
+      <ul>
+        <li><b>小組長</b>：每 10 人左右一小組，一位小組長；遊覽車每台 4 個小組。</li>
+        <li><b>車長</b>：每台遊覽車一位、火車每節車廂一位，<b>從小組長中選出</b>；當車長的人同時也是小組長。</li>
+        <li><b>領隊</b>：各分院的會長，帶整個分院（常住 11-17：<q>會長就是領隊</q>）。</li>
+        <li>車長與領隊各配一個<b>小蜜蜂</b>（隨身擴音器），用來佈達事項。</li>
+      </ul>
+      <h4>回報順序（常住 11-18 交代原話）</h4>
+      <p class="quote">小組長回報車長-車長回報領隊-領隊回報指揮中心</p>
+    </div>
+
+    <div class="card sx" id="ld2" data-s><h3>小組長要做的四件事（常住 11-20 交代）</h3>
+      <ol>
+        <li><b>先把大家查行程的部份教會</b>：照下一張「教組員查自己的行程」，一位一位教到會。</li>
+        <li><b>事先確實聯絡到每段行程的組員們</b>：用「各組名單與聯絡表」，篩選自己的組號，逐一打電話，聯絡到了在「已聯絡」欄打 ✓。</li>
+        <li><b>認識組員</b>：聯絡表有稱謂／同行關係（照報名表原文，沒寫就空著，<b>不要猜</b>）、帶頭報名者、分院、房號、每段的車與火車車廂。</li>
+        <li><b>每段行程點名－回報</b>：用手機回報（見下面），紙本點名表當備用；現場舉「手舉牌」讓組員找到你。</li>
+      </ol>
+      <h4>小組長資料包裡有什麼</h4>
+      <ul>
+        <li>手舉牌：每段一頁 A4（組號、小組長、日期、行程、組員姓名）。</li>
+        <li>點名表：每段一頁，勾「到／未到／自行前往」。</li>
+        <li>各組名單與聯絡表（Excel）：<b>含電話，只給小組長用，勿轉傳</b>。</li>
+      </ul>
+      <h4>識別證、餐卷、火車票</h4>
+      <ul>
+        <li>全部<b>到分院領取，不用寄</b>，由各小組長通知組員來領。</li>
+        <li>火車票只有圓道發；善首、善覺、EPIC 發識別證、餐卷並收費；新加坡比照，不發火車票。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ld3" data-s><h3>教組員查自己的行程</h3>
+      <ol>
+        <li>手機打開寶嚴建寺網站 building.baoyan.org.tw，點上方「動土大典報名」，往下找「已經報名了？查自己的安排」。</li>
+        <li>輸入報名時填的<b>完整電話</b>（本人或同行家人的電話都可以），按「查詢我的安排」。</li>
+        <li>或用手機相機掃個人小卡（通知單）上的 QR，直接打開自己的資料。</li>
+        <li>畫面會列出：所屬分院、同行、飯店、房號、車次、小組、組長。還沒公布的會寫「尚未公布」。</li>
+        <li>內容會隨大會作業更新，出發前請再查一次。</li>
+        <li>12/25 入住、12/26 上車當天，同一頁會出現「我已到達，入住報到／上車報到」，可以自己報到（填實到人數）。</li>
+      </ol>
+      <h4>教的時候注意</h4>
+      <ul>
+        <li>先在自己的手機查一次自己的，熟了再教組員。</li>
+        <li>查不到：確認是不是報名時填的那支電話；還是查不到，請洽所屬分院。</li>
+        <li>畫面上姓名中間字會遮起來，不顯示電話、證件號碼、出生日期。</li>
+        <li>不能來了：同一頁有「取消報名」，線上取消到 12/10（四）晚上 11:59，之後請聯絡分院窗口。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ld4" data-s><h3>打開自己的小組長頁（車長、領隊同一頁）</h3>
+      <h4>三種進法，任選一種</h4>
+      <ul>
+        <li>建寺網站「工作人員入口」→「小組長報到」：輸入<b>報名時的全名</b>和<b>報名時填的電話</b>。</li>
+        <li>用手機相機掃<b>自己</b>個人小卡上的 QR → 個人頁上方「我負責的」。</li>
+        <li>工作人員給你的專屬連結。</li>
+      </ul>
+      <h4>進去看得到</h4>
+      <ul>
+        <li>自己負責的組員名單、同行人數、每一段到了沒；可以直接撥電話、下載名單。</li>
+        <li>畫面寫「查不到負責的名單」：表示系統裡你還不是負責人，請找你的領隊或分院窗口。</li>
+      </ul>
+      <h4>兩個提醒</h4>
+      <ul>
+        <li><b>12/26 之前先用自己的手機打開一次</b>，看到自己那一組的名單就好。先打開過，當天會快很多；打不開、名單不對，請提早告訴工作人員。</li>
+        <li><b>當天用自己手機的 4G／5G，不要連會場 Wi-Fi</b>。幾千人同時上網，Wi-Fi 很容易塞住。連不上就等 10 秒再重新整理，還是不行就找報到櫃台。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ld5" data-s><h3>要回報哪幾段</h3>
+      <h4>火車</h4>
+      <ul><li>12/25 去程火車上車</li><li>12/26 回程火車上車</li><li>12/27 回程火車上車</li></ul>
+      <h4>遊覽車</h4>
+      <ul><li>12/25 台東火車站　上車往飯店</li><li>12/25 晚　飯店入住</li><li>12/26 早上　飯店上車（往動土會場）</li><li>12/26 下午 2 點　會場上車（依行程）</li><li>12/26 會場用完晚餐後　上車回飯店</li><li>12/26 晚　回飯店（入住確認）</li><li>12/27 早上 8:30　飯店集合上車（依行程）</li></ul>
+      <h4>自行前往會場的小組</h4>
+      <ul><li>12/26 會場報到</li></ul>
+    </div>
+
+    <div class="card sx" id="ld6" data-s><h3>小組長：回報怎麼勾</h3>
+      <ol>
+        <li>小組長頁點「回報系統」→ 上方選這一段（例：12/25 台東火車站　上車往飯店）。</li>
+        <li>每一位勾一個：<b>已上車／未到／自行前往</b>（入住那幾段是 已入住／還沒到／不住這裡）。也有一顆「其餘還沒勾的都是已上車」可以一次勾。</li>
+        <li>按「送出回報」→ 先出現確認頁（應到、已上車、未到名單）→ 沒問題按「確定送出」；要改就回上一步。</li>
+      </ol>
+      <h4>要知道的</h4>
+      <ul>
+        <li><b>每一位都要勾才送得出去。</b></li>
+        <li>組員本人也會在自己手機勾一次。兩邊自動比對，名字旁會寫：<b>一致／只有小組長勾／只有本人勾／兩邊都沒勾</b>。不一致的人，請當面或打電話再確認。</li>
+        <li>勾錯了：改好再送一次，以最後一次為準。</li>
+        <li>剛好有別人也回報了同一組：畫面會換成最新的，看過再送。</li>
+        <li>網路斷了照樣按：先記在手機上，網路回來自動補送。</li>
+      </ul>
+      <p class="quote">回報只要有勾選就算，不用再掃qr code, 但是勾選有二層：1是小組長勾選，2是自己勾，二項資料要交叉比對<br><small>（常住 11-18 交代原話）</small></p>
+    </div>
+
+    <div class="card sx" id="ld7" data-s><h3>車長</h3>
+      <ul>
+        <li>回報系統看「本車各組」：每組一行，已到／應到、回報了沒、不一致幾位。<b>紅色</b>＝有問題、<b>褐色</b>＝還沒回報、<b>綠色</b>＝正常。</li>
+        <li>下面有「兩邊不一致」名單，逐一確認。</li>
+        <li>各組都回報後，按「送出本車回報」；還有組沒回報，系統會先問一次。</li>
+        <li><b>12/26 下午、12/26 晚餐後、12/27 早上</b>這三段，大家依行程分車，小組會拆到不同車：這三段由<b>車長直接勾本車名單</b>（勾法同小組長）。</li>
+        <li>火車以「車廂」為單位，車廂車長看自己那一節。</li>
+        <li>回到飯店後回報「全車到飯店」，才算完成。</li>
+        <li>住哪家飯店就坐那家的車，不繞路停別家飯店。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ld8" data-s><h3>領隊</h3>
+      <ul>
+        <li>範圍＝自己的分院。點「回報系統（看板）」，上方選這一段。</li>
+        <li>看得到分院內每一台車／每一節車廂的回報進度、未到名單、兩邊不一致的人。</li>
+        <li>上方合計：應到、已上車、未到、自行前往、還沒回報。</li>
+        <li>確認後按「領隊回報」送給指揮中心。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ld9" data-s><h3>三天的點名時間點</h3>
+      <h4>12/25 抵達</h4>
+      <ul>
+        <li>去程火車上車點名（發車時間看個人小卡與大會公告）。</li>
+        <li>台東站分兩波到：台北線 16:50、台中/高雄線 17:43。出站後依飯店、依車號上遊覽車，上車點名。</li>
+        <li>到飯店入住，回報「已入住」。</li>
+      </ul>
+      <h4>12/26 動土</h4>
+      <ul>
+        <li>早上飯店上車點名（往會場）。</li>
+        <li>下午 2:00 三條線（中午離開／三仙台／江賢二）從會場上車點名；參加大蒙山的人留在會場，<b>由法務組點名，不另設報到</b>。</li>
+        <li>大蒙山圓滿、在會場用完晚餐後，依飯店、依車號上車回飯店。</li>
+        <li>退房的人行李放基地行李區，有人看管、跟車送。</li>
+      </ul>
+      <h4>12/27 回程</h4>
+      <ul>
+        <li>早上 8:30 飯店集合（退房、行李上車），去惡地或博物館。</li>
+        <li><b>12:00 前全部到台東火車站</b>，兩列包車火車：台中/高雄線 6666 次 12:38、台北線 6617 次 13:03。</li>
+        <li>12/26 選「中午離開」的人，12/27 沒有行程。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== 報到櫃台 ===== -->
+  <div class="aud" id="aud-desk">
+    <h2 class="ah">報到櫃台</h2>
+    <button type="button" class="upbtn">‹ 回上一層（選工作類別）</button>
+    <nav class="toc"><a href="#dk1">一句話流程</a><a href="#dk2">找人</a><a href="#dk3">卡片上看什麼</a><a href="#dk4">正式報到</a><a href="#dk5">信眾自助報到</a><a href="#dk6">按錯了</a><a href="#dk7">現場例外</a><a href="#dk8">多櫃台與斷網</a></nav>
+
+    <div class="card sx" id="dk1" data-s><h3>一句話流程</h3>
+      <p>掃信眾個人小卡上的 QR（或輸入完整電話／完整姓名）→ 看清楚是誰、住哪家飯店幾號房、坐哪台車哪個小組 → 確認人數，發房卡、小卡、結緣品 → 按「正式報到」。</p>
+      <ul>
+        <li>入口：登入後台 → 上方工具列「動土當天」→「報到處理」（搜尋框打「報到」也找得到）。</li>
+        <li>最上面選今天的階段：<b>12/25 入住</b>（飯店櫃台）或 <b>12/26 上車</b>。系統會依日期先選好，請再看一眼。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="dk2" data-s><h3>找到這位信眾（三種方法）</h3>
+      <ul>
+        <li><b>掃小卡 QR</b>：按「拍照掃描 QR」，拍信眾個人小卡上的 QR。第一次會問能不能用相機，按「允許」。有掃碼槍就直接掃進查詢框。</li>
+        <li><b>完整電話</b>：報名時填的完整號碼，連字號可打可不打。<b>只打後四碼查不到</b>——這是故意的，避免帶出別人。</li>
+        <li><b>完整姓名</b>：一字不差。報名者本人或同行家人的名字都可以。少一字、錯一字都查不到。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="dk3" data-s><h3>卡片上看什麼</h3>
+      <ul>
+        <li>姓名、分院、報名幾位；電話只顯示後四碼（排隊的人看得到螢幕）。</li>
+        <li>同行：報名時填的家人；同房：同一間房的其他報名。</li>
+        <li>大字金色：<b>飯店＋房號</b>（例「立麗 1201」）；沒有房會寫「未分房」。</li>
+        <li>遊覽車車號與小組、組長、車長。</li>
+        <li>入住／上車狀態：「已報到 時間　實到幾位　經手人」或紅字「未報到」；信眾自己報到過的多一個「信眾自助」標籤。</li>
+        <li>要發的物品：房卡、小卡、結緣品三個勾選框；發過的會寫幾點發的。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="dk4" data-s><h3>正式報到</h3>
+      <ol>
+        <li>核對本人與人數。「實到」預設帶信眾自助填的人數，沒有就是報名人數；來的人數不同就改。</li>
+        <li>物品：還沒報到的人三樣預設都打勾，沒有發的先取消勾選（例如結緣品還沒到）。</li>
+        <li>按「正式報到」。畫面馬上變「已報到（送出中…）」，<b>不用等，可以直接查下一位</b>。</li>
+      </ol>
+      <ul><li>人數跟報名不同時，系統會跳提醒：請通報總指揮（餐點、座位要跟著改）。</li></ul>
+    </div>
+
+    <div class="card sx" id="dk5" data-s><h3>信眾已自助報到（待確認）</h3>
+      <ul>
+        <li>信眾可以在自己手機按「我已到達，入住報到」（12/26 是「上車報到」）。<b>這不是正式報到</b>，信眾還是要到櫃台領小卡。</li>
+        <li>按「待確認（N）」分頁：列出自己報到、櫃台還沒確認的人。人到櫃台時核對，按「確認自助報到」就轉成正式報到。</li>
+      </ul>
+      <h4>信眾問「我要怎麼自己報到」</h4>
+      <ol>
+        <li>掃個人小卡上的 QR，或到建寺網站「查詢我的報名」輸入報名時的電話。</li>
+        <li>確認「實到人數」（有人沒來就改成實際人數）。</li>
+        <li>按「我已到達，入住報到」（12/26 是「上車報到」），看到「✓ 已收到報到」就好。</li>
+        <li>再到櫃台出示畫面，領小卡。</li>
+      </ol>
+    </div>
+
+    <div class="card sx" id="dk6" data-s><h3>按錯了怎麼辦</h3>
+      <ul>
+        <li><b>人數填錯</b>：按「更正人數」，報到時間不會變。</li>
+        <li><b>物品勾錯、晚一點才補發</b>：改好勾選，按「存物品勾選」。</li>
+        <li><b>報錯人</b>：按「撤銷報到」→ 確認 → 寫原因（可空白）→ 選物品要不要一併收回。撤銷會留紀錄，誰在幾點撤的都查得到。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="dk7" data-s><h3>現場例外</h3>
+      <ul>
+        <li><b>沒有房／要換房</b>：按「沒有房／要換房 → 空房查詢」。</li>
+        <li><b>資料有錯</b>（房號不對、同行人數不符、電話錯…）：按「資料有錯 → 待聯絡清單」，寫一句問題，由專人處理。同一個問題按兩次不會重複加。</li>
+        <li><b>查不到人</b>：電話要完整、姓名要一字不差，或改掃 QR。真的沒有就請他到服務台，或加入待聯絡清單。</li>
+        <li><b>掃 QR 說「對不到」</b>：可能是舊卡或報名已合併到別筆，改用電話查。</li>
+        <li><b>掃到志工的 QR</b>：志工不在報名名單裡，請他到志工報到處。</li>
+        <li><b>畫面說「請重新整理這一頁」</b>：系統剛換新版，按瀏覽器重新整理，不用重新登入。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="dk8" data-s><h3>好幾個櫃台一起用、網路不穩</h3>
+      <ul>
+        <li>好幾支手機同時報到沒問題；別的櫃台報到的，幾秒內你的畫面也會更新。</li>
+        <li>兩個櫃台搶同一個人：先送到的算數，後面那台會說「已經由某某完成報到，這次沒有重複寫入」，不會蓋掉。</li>
+        <li>斷網時上方變紅色「連不上伺服器：動作先存在這台手機」，照樣按；網路回來自動補送，會跳出「已補送 N 筆」。</li>
+        <li><b>斷網時不要關掉這一頁</b>：看到「待補送 N 筆」還沒歸零前請保持開著（重新整理沒關係）。</li>
+        <li>權限：編輯、管理可以報到、更正、撤銷；檢視、臨時幫忙只能查人、看統計。</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ===== 其他各組 ===== -->
+  <div class="aud" id="aud-other">
+    <h2 class="ah">其他各組</h2>
+    <button type="button" class="upbtn">‹ 回上一層（選工作類別）</button>
+    <nav class="toc"><a href="#ot1">進後台</a><a href="#ot2">列印與下載</a><a href="#ot3">可下載的名單</a><a href="#ot4">空房／房號查詢</a><a href="#ot5">待聯絡清單</a><a href="#ot6">飯店總覽</a><a href="#ot7">飯店、場地、法務</a><a href="#ot8">完整版住宿與移動</a></nav>
+
+    <div class="card sx" id="ot1" data-s><h3>進後台（分派主控台）</h3>
+      <ul>
+        <li>建寺網站「工作人員入口」→「分派主控台　工作人員後台」。</li>
+        <li>要通行碼，而且你的信箱要在工作人員名單上；通行碼請向承辦單位索取。</li>
+        <li>身分分管理、編輯、檢視、臨時幫忙；按鈕依身分出現，看不到某顆鈕表示你的身分不能用。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ot2" data-s><h3>每個畫面都能列印、下載</h3>
+      <ul>
+        <li>畫面右下角固定兩顆鈕：「列印／存 PDF」、「下載 Excel」。在哪個畫面就處理哪個畫面。</li>
+        <li>列印時「目的地」選「另存為 PDF」就是 PDF 檔。</li>
+        <li>下載的內容＝你這個身分在畫面上看得到的；看不到的欄位不會出現在檔案裡。</li>
+        <li><b>檔案有姓名、電話：勿轉寄、勿上傳雲端，用完收回或銷毀紙本。</b></li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ot3" data-s><h3>「下載名單」分頁有哪些名單</h3>
+      <ul>
+        <li>典禮：唱名名單、鏟土順序與座位、座位圖、座位卡（A4 一頁 4 張）。</li>
+        <li>住宿：分房名單（依房號）、同房需求、入住報到表（12/25 飯店櫃台紙本備用）。</li>
+        <li>交通：分車名單、分組名單（組長在最前）、上車報到表（12/26）、散客報到表（自行前往）、火車名單（去程台北／台中／高雄、回程 12/26／12/27、自行前往）。</li>
+        <li>其他：認供名單、功德主禮品名單。</li>
+        <li>每份都有 PDF／Excel／好讀版。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ot4" data-s><h3>空房／房號查詢</h3>
+      <ul>
+        <li>後台最上排「空房／房號查詢」。</li>
+        <li><b>空房空床</b>：選飯店，可勾「只看有空床」；一間一張卡，有人住的按「看住客」。</li>
+        <li><b>房號查住客</b>：選飯店、輸入房號（「1101」或「1101 號」都可以）。</li>
+        <li>新增分派、移出、換房：只有編輯、管理看得到按鈕；每次都會留紀錄。</li>
+      </ul>
+      <h4>系統會擋下、並直接說原因的情形</h4>
+      <ul>
+        <li>床位不夠（同行的人一起算）。</li>
+        <li>男女混住（一家人例外）；有男有女的家庭房不能再放外人。</li>
+        <li>桂田不能從這裡放人或移出。</li>
+        <li>鎖定房誰都不能動；保留房只有管理可以，而且要再確認一次。</li>
+        <li>別人剛改過同一位：不會蓋掉別人的修改，畫面會換成最新的。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ot5" data-s><h3>待聯絡清單</h3>
+      <ul>
+        <li>資訊不明或看起來奇怪的報名（同行人數被改過、同行者姓名沒填、疑似重覆報名…）列成一張清單，一筆一張卡。</li>
+        <li>可以選類別、處理狀態（待聯絡／已聯絡／已解決／聯絡不到），或搜尋姓名、R 編號。</li>
+        <li>按卡片上的「撥打」直接撥號；聯絡後寫查詢結果、選狀態，按「儲存回覆」。</li>
+        <li>每次回覆都留下「時間｜誰｜狀態 內容」，舊紀錄不會被蓋掉；兩人同時回覆兩筆都會留。</li>
+        <li>這裡<b>只記聯絡結果，不會改房號或報名資料</b>；要改房號請到名單頁或「空房／房號查詢」。</li>
+        <li>出現「沒有存成功」：代表真的沒存，你寫的字還在框裡，再按一次。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ot6" data-s><h3>飯店總覽</h3>
+      <ul>
+        <li>後台工具列「飯店總覽」：一家飯店一張卡，房型與間數、即時入住人數、可用空床、各分院住幾人、遊覽車號與車長；最下面是火車時刻。</li>
+        <li>房號一律連飯店名寫（例「亞灣 7117」「立麗 1303」），避免走錯飯店。</li>
+        <li>畫面上「待補」「待公告」是資料還沒有，不是壞掉。</li>
+      </ul>
+    </div>
+
+    <div class="card sx" id="ot7" data-s><h3>飯店、場地、法務組要知道的</h3>
+      <h4>飯店（各飯店負責的工作人員）</h4>
+      <ul>
+        <li>入住後回報<b>入住房數、空房數</b>，用來結算費用、調配空房、訂餐。</li>
+        <li>各飯店都有 26、27 日早餐。</li>
+        <li>亞灣志工：25 日之前住志工房、每日早餐；25 日開始改住與會者房。</li>
+      </ul>
+      <h4>場地</h4>
+      <ul><li>26 日行李：基地設行李區，派人看管、跟車送。</li></ul>
+      <h4>法務</h4>
+      <ul><li>26 日下午留在基地參加大蒙山的人，由法務組點名，不另設報到。</li></ul>
+      <h4>接待</h4>
+      <ul><li>「特照」＝特別照客，專人接待地方首長、貴賓、諸山長老。</li></ul>
+    </div>
+
+    <div class="card sx" id="ot8" data-s><h3>完整版：住宿與移動工作說明</h3>
+      <ul>
+        <li>各組（資料聯絡、公關、司儀、主持人、報到、現場、領隊車長小組長、參觀行程）的完整分工與時間軸，另有一頁：<a href="https://twnyda07.github.io/baoyan-groundbreaking-teams/transport.html" target="_blank" rel="noopener">住宿與移動</a>（這一頁需要通行碼，請向承辦單位索取）。</li>
+        <li>那一頁標【建議】的是規劃中的做法，以大會最新公告為準。</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<!-- STAFF:END -->
 <!-- ① 架構圖 -->
 <section class="tab on" id="t-arch">
+  <!-- STAFF:BEGIN --><a href="#" class="gl staffgo" id="staffGo"><b>★ 工作人員說明</b><span>司儀主持人、小組長車長領隊、報到櫃台、其他各組：要做什麼、怎麼操作，先看這裡。</span></a><!-- STAFF:END -->
   <p class="lead">大典工作分成 <b>10 個組</b>，依性質歸成<b>四大區塊</b>。點任何一組，看該組的負責範圍與待辦。</p>
   <div class="root"><span>動土大典</span></div>
   <div class="stem"></div>
@@ -208,7 +635,7 @@ footer{color:var(--sub);font-size:13px;margin-top:30px;border-top:1px solid var(
   <div id="askBox"></div>
 </section>
 
-<footer class="siteinfo"><h3 style="font-size:16px;margin:0 0 6px">本站資訊</h3><dl class="kv"><dt>名稱</dt><dd>寶嚴禪寺開山動土大典　工作架構與分組</dd><dt>網址</dt><dd><a href="https://twnyda07.github.io/baoyan-dongtu-plan/">https://twnyda07.github.io/baoyan-dongtu-plan/</a></dd><dt>特別功能</dt><dd>搜尋工作項目；依組別查看待辦；勾選自己的進度（只存在自己的手機）</dd><dt>版權</dt><dd>© 2026 寶嚴山寶嚴禪寺　保留一切權利</dd></dl></footer>
+<footer>👉🏻 資訊：名稱／寶嚴禪寺開山動土大典　架構與分組・工作人員說明｜網址／<a href="https://twnyda07.github.io/baoyan-dongtu-plan/">https://twnyda07.github.io/baoyan-dongtu-plan/</a>｜特別功能／依工作類別（司儀主持人、小組長車長領隊、報到櫃台、其他各組）查說明、全頁搜尋、待辦勾選（只存在自己的手機）、深色模式｜創作者／Claude｜版權所有＝寶嚴山寶嚴禪寺</footer>
 </div>
 <button class="ibtn top" id="toTop" aria-label="回到頂端">▲ 頂端</button>
 
@@ -500,7 +927,32 @@ $('#themeBtn').onclick=()=>{const r=document.documentElement;const dark=r.datase
 const th=store.get('dt-theme');if(th)document.documentElement.dataset.theme=th;
 $('#toTop').onclick=()=>scrollTo({top:0,behavior:'smooth'});
 addEventListener('resize',hh);hh();
+/* STAFF:BEGIN */
+// ===== 工作人員說明：選對象（第一層）→ 該對象的說明（第二層） =====
+TN.staff="工作人員說明";
+const AUDN={mc:"司儀・主持人",ldr:"小組長・車長・領隊",desk:"報到櫃台",other:"其他各組"};
+let aud="";
+function staffView(){const q=$('#q').value.trim();
+ $$('#t-staff .aud').forEach(a=>{a.classList.toggle('on',q?true:a.id==='aud-'+aud);a.classList.toggle('hide',!!q&&!a.querySelector('.card:not(.hide)'))});
+ $('#audPick').classList.toggle('hide',!!q||!!aud);
+ $$('#t-staff .toc,#t-staff .upbtn').forEach(x=>x.classList.toggle('hide',!!q));}
+function setAud(a){aud=AUDN[a]?a:"";store.set('dt-aud',aud);staffView();crumb();scrollTo({top:0})}
+$$('#audPick button').forEach(b=>b.onclick=()=>setAud(b.dataset.aud));
+$$('#t-staff .upbtn').forEach(b=>b.onclick=()=>setAud(''));
+$$('#t-staff .toc a').forEach(a=>a.onclick=e=>{e.preventDefault();const el=document.getElementById(a.getAttribute('href').slice(1));if(el)el.scrollIntoView({behavior:'smooth'})});
+$('#staffGo').onclick=e=>{e.preventDefault();show('staff')};
+{const _c0=crumb;crumb=function(){if(cur!=='staff')return _c0();
+ $('#crumb').innerHTML=`目前位置：<a href="#" id="home">動土大典</a> › `+(aud?`<a href="#" id="sHome">工作人員說明</a> › <b>${AUDN[aud]}</b> <a href="#" id="up">（回上一層）</a>`:'<b>工作人員說明</b>');
+ $('#home').onclick=e=>{e.preventDefault();show('arch')};
+ const sh=$('#sHome');if(sh)sh.onclick=e=>{e.preventDefault();setAud('')};const u=$('#up');if(u)u.onclick=e=>{e.preventDefault();setAud('')}};}
+{const _a0=applySearch;applySearch=function(){_a0();if(cur==='staff')staffView()};$('#q').addEventListener('input',()=>{if(cur==='staff')staffView()});}
+aud=AUDN[store.get('dt-aud')]?store.get('dt-aud'):"";staffView();
+/* STAFF:END */
 const lt=store.get('dt-tab');if(lt&&TN[lt])show(lt);else crumb();
+/* STAFF:BEGIN */
+// 網址帶 #staff 或 #staff-ldr（mc／ldr／desk／other）就直接打開那一類
+{const h=decodeURIComponent(location.hash.slice(1));if(h==='staff'||h.indexOf('staff-')===0){show('staff');setAud(h.slice(6))}}
+/* STAFF:END */
 </script>
 </body>
 </html>
